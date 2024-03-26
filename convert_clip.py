@@ -58,7 +58,8 @@ if __name__ == '__main__':
         image_input = {"x": torch.randn(
             batch, 3, 224, 224, dtype=torch.float32)}
         openclip_image_encoder = ov.convert_model(
-            model.visual, example_input=image_input, input=(batch, 3, 224, 224))
+            model.visual, example_input=image_input, input=(-1, 3, 224, 224))
+        openclip_image_encoder.reshape([batch, 3, 224, 224])
         ov.save_model(openclip_image_encoder,
                       f"{args.output_path}/{model_id.lower().replace('-','_')}_visual.xml")
         # convert text transformer
